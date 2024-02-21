@@ -5,14 +5,14 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../repositories/qr_scanner_repository.dart';
 
-class GetQrCode implements UseCase<bool,Params>{
+class ReviewSerialCode implements UseCase<bool,Params>{
   final QrScannerRepository repository;
 
-  GetQrCode(this.repository);
+  ReviewSerialCode(this.repository);
   
   @override
   Future<Either<Failure, bool>> call(Params params) async {
-    return await repository.getSerialNumber(params.serial);
+    return await repository.reviewSerial(params.serial);
   }
   
 }
