@@ -7,7 +7,6 @@ import '../datasource/qr_scanner_local_data_source.dart';
 class QrScannerRepositoryImpl implements QrScannerRepository {
   final QrScannerLocalDataSource localDataSource;
 
-  // ignore: non_constant_identifier_names
   QrScannerRepositoryImpl({
     required this.localDataSource
   });

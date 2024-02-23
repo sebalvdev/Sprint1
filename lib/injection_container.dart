@@ -16,7 +16,7 @@ Future<void> init() async {
   // Use Cases
   sl.registerFactory(()
     => QrScannerBloc(
-      reviewSerial: sl(),
+      reviewSerialCode: sl(),
     ));
 
   // Repository

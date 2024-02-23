@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-// import '../../../../core/error/exceptions.dart';
 import '../models/qr_scanner_model.dart';
 
 abstract class QrScannerLocalDataSource {
@@ -20,7 +19,7 @@ class QrScannerLocalDataSourceImpl implements QrScannerLocalDataSource {
   Future<bool> reviewSerial(String serial) async {
     final jsonString =  sharedPreferences.getString(cacheQrScanner);
     bool result = false;
-    if(jsonString !=null) {
+    if(jsonString != null) {
       List<QrScannerModel> qrScannerList = qrScannerModelFromJson(jsonString);
       for (var i in qrScannerList) {
         if (i.serial == serial) {
