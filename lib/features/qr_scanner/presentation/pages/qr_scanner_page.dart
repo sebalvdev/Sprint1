@@ -12,6 +12,7 @@ class QrScannerPage extends StatelessWidget {
 
   final MobileScannerController cameraController = MobileScannerController(
     detectionSpeed: DetectionSpeed.normal,
+    facing: CameraFacing.back,
     formats: [BarcodeFormat.qrCode]
   );
 
@@ -19,16 +20,41 @@ class QrScannerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: const Text('Escaner QR'),
       ),
-      body: SingleChildScrollView(
-        child: buildBody(context),
+
+      body: BlocProvider(
+        create: (_) => sl<QrScannerBloc>(),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: MobileScanner(
+              controller: cameraController,
+              onDetect: (capture) {
+                var qrCapture = capture.barcodes[0];
+                BlocProvider.of<QrScannerBloc>(context).add(ReviewSerialCodeEvent(serial: qrCapture.displayValue ?? ''));
+              },
+      
+              overlay: Container(
+                decoration: ShapeDecoration(
+                  shape: QrScannerViewer(
+                    borderColor: Colors.white,
+                    borderRadius: 10,
+                    borderLength: 10,
+                    borderWidth: 5,
+                    cutOutSize: MediaQuery.of(context).size.width * 0.8,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
       ),
     );
   }
 
   BlocProvider<QrScannerBloc> buildBody(BuildContext context) {
-    bool isScanEnable = true;
     return BlocProvider(
       create: (_) => sl<QrScannerBloc>(),
       child: Center(
@@ -39,22 +65,16 @@ class QrScannerPage extends StatelessWidget {
               if (state is QrScannerLoading) {}
               if (state is QrScannerSuccess) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
-                  isScanEnable = false;
                   await scannedQrDialog(context, state.isValidQr);
-                  isScanEnable = true;
                 });
               }
+              
               return MobileScanner(
                 controller: cameraController,
                 onDetect: (capture) {
-                  if (isScanEnable) {
-                    var qrCapture = capture.barcodes[0];
-                    if (state is QrScannerInitial) {
-                      BlocProvider.of<QrScannerBloc>(context).add(ReviewSerialCodeEvent(serial: qrCapture.displayValue ?? ''));
-                      }
-                    }
-                  },
-
+                  var qrCapture = capture.barcodes[0];
+                  BlocProvider.of<QrScannerBloc>(context).add(ReviewSerialCodeEvent(serial: qrCapture.displayValue ?? ''));
+                },
                   overlay: Container(
                     decoration: ShapeDecoration(
                       shape: QrScannerViewer(
@@ -67,10 +87,10 @@ class QrScannerPage extends StatelessWidget {
                   ),
                 ),
               );
-            },
+            }
           ),
-        ),
-      ),
+        )
+      )
     );
   }
 

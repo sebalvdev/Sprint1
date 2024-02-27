@@ -25,9 +25,9 @@ void main() {
     },
   );
 
-  group('VerifyQrCode', () {
+  group('ReviewQrCode', () {
     test(
-      "should get a boolean value from the VerifyQrCode usecase",
+      "should get a boolean value from the ReviewQrCode usecase",
       () async {
         // arrange
         when(() => reviewSerialCode(any()))
