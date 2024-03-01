@@ -11,7 +11,7 @@ class QrScannerPage extends StatelessWidget {
   QrScannerPage({super.key});
 
   final MobileScannerController cameraController = MobileScannerController(
-    detectionSpeed: DetectionSpeed.normal,
+    detectionSpeed: DetectionSpeed.noDuplicates,
     facing: CameraFacing.back,
     formats: [BarcodeFormat.qrCode]
   );
@@ -62,7 +62,6 @@ class QrScannerPage extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: BlocBuilder<QrScannerBloc, QrScannerState>(
             builder: (context, state) {
-              if (state is QrScannerLoading) {}
               if (state is QrScannerSuccess) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
                   await scannedQrDialog(context, state.isValidQr);

@@ -8,7 +8,7 @@ import '../repositories/qr_scanner_repository.dart';
 class ReviewSerialCode implements UseCase<bool,Params>{
   final QrScannerRepository repository;
 
-  ReviewSerialCode(this.repository);
+  ReviewSerialCode({required this.repository});
   
   @override
   Future<Either<Failure, bool>> call(Params params) async {

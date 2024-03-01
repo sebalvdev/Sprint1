@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1/features/qr_scanner/presentation/pages/qr_scanner_page.dart';
-// import 'features/home/presentation/pages/home_page.dart';
-// import 'injection_container.dart' as dependencies;
 
-void main() {
+import 'config/routes.dart';
+import 'features/home/presentation/pages/home_page.dart';
+import 'injection_container.dart' as dependencies;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dependencies.init();
   runApp( const MyApp() );
 }
 
@@ -12,10 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: HomePage(),
-      home: QrScannerPage(),
+      
+      home: HomePage(),
+      onGenerateRoute: AppRoutes.onGenerateRoutes,
     );
   }
 }
